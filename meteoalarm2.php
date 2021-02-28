@@ -1,4 +1,7 @@
-<?php include('w34CombinedData.php');error_reporting(0); 
+<?php include('w34CombinedData.php');error_reporting(0);
+#############################################################################
+# meteoalarm2.php Original PHP/HTML/CSS script by steepleian@gmail.com 2021 #
+#############################################################################
 ?>
 <style>
 
