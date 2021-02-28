@@ -113,7 +113,7 @@ table{
 <?php
 //$geocode = "UK127";
 $locationname = "London & South East";
-//$locationname = "Wales";
+//$locationname = "Stadt Dresden";
 $urlgeocode = "https://meteoalarm.org?geocode=EMMA_ID:$geocode";
 
 function get_string_between($string, $start, $end){
