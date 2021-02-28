@@ -17,13 +17,57 @@
   background-color: lightgreen;
 }
 
+.alert-row-narrow {
+  display: flex;
+  flex-direction: row;
+  height: 60px;
+  padding: 10px 0;
+  background-color: white;
+  font-size: 12px;
+}
+
+.alert-row-info {
+  display: flex;
+  flex-direction: row;
+  height: 120px;
+  padding: 10px 0;
+  background-color: white;
+}
+
 .alert-text-container {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 11px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-right: 10px;
+  color: black;
+}
+
+.alert-text-container-narrow {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin-right:10px;
+}
+/* unvisited link */
+body {
+	background-image: url();
+	margin-left: 8px;
+	margin-top: 8px;
+	margin-right: 8px;
+	margin-bottom: 8px;
+	background-color: #343D46;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #FFFFFF;
+	font-weight: normal;
+}
+html{
+	margin:0;
+	padding:0;
 }
 /* unvisited link */
 a:link {
@@ -44,14 +88,32 @@ a:hover {
 a:active {
   color: white;
 }
-  div.c {
-  text-transform: capitalize;
+.LegendText2 {
+
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: silver;
+	font-weight: normal;
+}
+
+ 
+ 
+ .Ebene3Header {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+table{
+	font-size:11px;
+	vertical-align:bottom;
+    width:auto;
 }
 </style>
 <body>
 <?php
-$geocode = "UK117";
-//$locationname = "London & South East";
+//$geocode = "UK127";
+$locationname = "London & South East";
+//$locationname = "Wales";
 $urlgeocode = "https://meteoalarm.org?geocode=EMMA_ID:$geocode";
 
 function get_string_between($string, $start, $end){
@@ -64,10 +126,12 @@ function get_string_between($string, $start, $end){
 }
 
 
-  //echo '<div class="weather34darkbrowser" url="MetOffice Severe Weather Warnings for '.$stationlocation.'"></div><p style="color:orange">';
-      $json = 'jsondata/test.txt'; 
+
+      $json = 'jsondata/al.txt'; 
 $json = file_get_contents($json); 
 $parsed_json = json_decode($json, true);
+$count = 0;
+
 
     for ($i = 0; $i <20; $i++)
 {$title[$i]=$parsed_json['rss']['channel']['item'][$i]['title'];
@@ -75,9 +139,9 @@ $parsed_json = json_decode($json, true);
  $pubDate[$i]=$parsed_json['rss']['channel']['item'][$i]['pubDate'];
  $link[$i]=$parsed_json['rss']['channel']['item'][$i]['link'];
  
-if($link[$i] === $urlgeocode)
-//if($title[$i] === $locationname)
-{
+//if($link[$i] === $urlgeocode)
+if($title[$i] === $locationname)
+{$count=$count+1;
        
        if ((strpos($description[$i], "awt:1 level:2") !== false)){$warnimage[$i] = "css/wrnImages/Wind_Yellow.svg"; $alertlevel[$i]="yellow";$alerttype[$i]='Wind';$blocka[$i] = get_string_between($description[$i], 'English: ', 'For further details see https://www.metoffice.gov.uk/weather/warnings-and-advice/uk-warnings ');
 $blockb[$i] = get_string_between($description[$i], 'For further details see https://www.metoffice.gov.uk/weather/warnings-and-advice/uk-warnings ', 'Tomorrow');
@@ -205,13 +269,58 @@ $text[$i] = $blocka[$i].'. '.$blockb[$i];$timespan[$i] = get_string_between($des
     </div>
 </div>                           
 <?php 
-    }}
+    }}if($count===0){?><div class="alert-row-narrow" style="color:black;font-size:16px;">
+  <img src="css/wrnImages/No Warnings_LightGreen.svg">
+    <div class="alert-text-container-narrow">
+    <div><b>There are currently no Severe Weather Warnings in force at <?php echo $stationName;?> Weather Station</b></div></div></div>
+    <div class="alert-row-info" style="background-color:transparent;color:silver;">
+    
+<table cellspacing="5" cellpadding="0">
+	
+	
+	<tr>
+        <td style="padding-left:15px;">
+        <b>GLOSSARY</b>
+		</td>
+    </tr>
+	<tr>
+		<td style="padding-left:15px; color:yellow">
+        <b>Description Severity Level 2 Yellow</b>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" style="padding-left:15px; color:yellow;">
+			The weather is potentially dangerous. The weather phenomena that have been forecast are not unusual, but be attentive if you intend to practice activities exposed to meteorological risks. Keep informed about the expected meteorological conditions and do not take any avoidable risk.<br><br>
+		</td>
+	</tr>
+	<tr>
+		<td style="padding-left:15px; color:orange">
+        <b>Description Severity Level 3 Amber</b>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" style="padding-left:15px; color:orange;">
+			The weather is dangerous. Unusual meteorological phenomena have been forecast. Damage and casualties are likely to happen. Be very vigilant and keep regularly informed about the detailed expected meteorological conditions. Be aware of the risks that might be unavoidable. Follow any advice given by your authorities.<br><br>
+		</td>
+	</tr>
+	<tr>
+		<td style="padding-left:15px; color:red">
+        <b>Description Severity Level 4 Red</b>
+		</td>
+	<tr>
+	<tr>
+		<td colspan="2" style="padding-left:15px;color:red;">
+			The weather is very dangerous. Exceptionally intense meteorological phenomena have been forecast. Major damage and accidents are likely, in many cases with threat to life and limb, over a wide area. Keep frequently informed about detailed expected meteorological conditions and risks. Follow orders and any advice given by your authorities under all circumstances, be prepared for extraordinary measures.
+		</td>
+	</tr>
+	
+</table>
+    </div>
+
+ <?php  }
 ?>
 
-
-<div class="provided">
-  <div style="position:absolute;bottom:10px;z-index:9999;font-weight:normal;font-size:14px;color:#aaa;text-decoration:none !important;float:right;font-family:arial;">
-
+<div style="position:absolute; bottom:3px; ">
    &nbsp;&nbsp;METEOALARM EUMETNET Weather Warnings <a href="https://www.meteoalarm.org/en" title="Meteoalarm Weather Warnings" target="_blank">https://www.meteoalarm.org/en</a>  
 </div>
 </body>
